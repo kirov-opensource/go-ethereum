@@ -318,6 +318,8 @@ func (p *Peer) readLoop(errc chan<- error) {
 			errc <- err
 			return
 		}
+		// print msg
+		fmt.Println("0xG_msg:", msg)
 		msg.ReceivedAt = time.Now()
 		if err = p.handle(msg); err != nil {
 			errc <- err
@@ -341,6 +343,7 @@ func (p *Peer) handle(msg Msg) error {
 		// ignore other base protocol messages
 		return msg.Discard()
 	default:
+		fmt.Println("0xG_default_handle_msg:", msg)
 		// it's a subprotocol message
 		proto, err := p.getProto(msg.Code)
 		if err != nil {
